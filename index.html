@@ -69,21 +69,21 @@
     </form>
 
     <section id="error-btns">
-      <button>Console Log</button>
-      <button>Console Error</button>
-      <button>Console Count</button>
-      <button>Console Warn</button>
-      <button>Console Assert</button>
-      <button>Console Clear</button>
-      <button>Console Dir</button>
-      <button>Console dirxml</button>
-      <button>Console Group Start</button>
-      <button>Console Group End</button>
-      <button>Console Table</button>
-      <button>Start Timer</button>
-      <button>End Timer</button>
-      <button>Console Trace</button>
-      <button>Trigger a Global Error</button>
+      <button id ="log">Console Log</button>
+      <button id ="error">Console Error</button>
+      <button id ="count">Console Count</button>
+      <button id ="warn">Console Warn</button>
+      <button id ="assert">Console Assert</button>
+      <button id ="clear">Console Clear</button>
+      <button id ="dir">Console Dir</button>
+      <button id ="dirxml">Console dirxml</button>
+      <button id ="group-start">Console Group Start</button>
+      <button id ="group-end">Console Group End</button>
+      <button id ="table">Console Table</button>
+      <button id ="start-timer">Start Timer</button>
+      <button id ="end-timer">End Timer</button>
+      <button id ="trace">Console Trace</button>
+      <button id ="global">Trigger a Global Error</button>
     </section>
   </main>
 
@@ -102,6 +102,94 @@
 
     // Start your code here
     // You may move this JS to another file if you wish
+    let log = document.getElementById("log");
+    log.addEventListener('click', () =>{
+      console.log('Console Log Demo')
+    })
+
+    let error = document.getElementById("error");
+    error.addEventListener('click', () =>{
+      console.error('Console Log Error')
+    })
+
+    let count = document.getElementById("count");
+    count.addEventListener('click', () =>{
+      console.count("Count Button");
+    })
+
+    let warn = document.getElementById("warn");
+    warn.addEventListener('click', () =>{
+      console.warn("Console Warn Demo");
+    })
+
+    let assert = document.getElementById("assert");
+    assert.addEventListener('click', () =>{
+      console.assert(1 === 2, "1 === 2, Numbers are not equal");
+    })
+
+    let clear = document.getElementById("clear");
+    clear.addEventListener('click', () =>{
+      console.clear();
+    })
+
+    let dir = document.getElementById("dir");
+    dir.addEventListener('click', () =>{
+      console.dir(document.location);
+    })
+
+    let dirxml = document.getElementById("dirxml");
+    dirxml.addEventListener('click', () =>{
+      console.dirxml(document.getElementById("dirxml"));
+    })
+
+    let groupStart = document.getElementById("group-start");
+    groupStart.addEventListener('click', () =>{
+      console.group();
+    })
+
+    let groupEnd = document.getElementById("group-end");
+    groupEnd.addEventListener('click', () =>{
+      console.groupEnd();
+    })
+
+    
+    let table = document.getElementById("table");
+    table.addEventListener('click', () =>{
+      console.table(["CSE 110,", "CSE 170", "CSE 101"]);
+    })
+
+    let startTimer = document.getElementById("start-timer");
+    startTimer.addEventListener('click', () =>{
+      console.time("Time");
+    })
+
+    let endTimer = document.getElementById("end-timer");
+    endTimer.addEventListener('click', () =>{
+      console.timeEnd("Time");
+    })
+
+    let trace = document.getElementById("trace");
+    trace.addEventListener('click', () =>{
+      function outer(){
+        function inner(){
+          console.trace();
+        }
+        inner();
+      }
+      outer();
+    })
+
+    let startTime = Date.now();
+    let obj = {first_name: 'Purich'}
+    try{
+        obj.last_name;
+    }
+    catch(err){
+      throw new SyntaxError("There is no last name!");
+    }
+    finally{
+      diff = Date.now() - startTime;
+    }
   </script>
 </body>
 
