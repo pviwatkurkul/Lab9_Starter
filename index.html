@@ -47,6 +47,13 @@
       width: 122px;
     }
   </style>
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "d6032ea18833439592e044e33a357535"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>
 </head>
 
 <body>
@@ -84,6 +91,8 @@
       <button id ="end-timer">End Timer</button>
       <button id ="trace">Console Trace</button>
       <button id ="global">Trigger a Global Error</button>
+      <button id="trigger-error">Trigger Try Catch Error</button>
+      <button id="trigger-extended-error">Trigger Extended Error</button>
     </section>
   </main>
 
@@ -134,7 +143,7 @@
 
     let dir = document.getElementById("dir");
     dir.addEventListener('click', () =>{
-      console.dir(document.location);
+      console.dir(document.getElementById("dir"));
     })
 
     let dirxml = document.getElementById("dirxml");
@@ -179,17 +188,65 @@
       outer();
     })
 
-    let startTime = Date.now();
-    let obj = {first_name: 'Purich'}
-    try{
-        obj.last_name;
+    let triggerError = document.getElementById("trigger-error");
+    triggerError.addEventListener('click', () => {
+    let output = document.querySelector('output');
+      try {
+        throw new Error("This is a custom error message!");
+      } catch (err) {
+        alert(`Caught an error: ${err.message}`);
+      } finally {
+        console.log("This runs no matter what.");
+      }
+    });
+
+
+    class ValidationError extends Error {
+      constructor(message) {
+        super(message);
+        this.name = "ValidationError";
+      }
     }
-    catch(err){
-      throw new SyntaxError("There is no last name!");
-    }
-    finally{
-      diff = Date.now() - startTime;
-    }
+
+    function readUser(json) {
+      let user = JSON.parse(json);
+
+      if (!user.school) {
+        throw new ValidationError("No School: Seventh?");
+      }
+      if (!user.name) {
+        throw new ValidationError("No field: name");
+      }
+      return user;
+    }   
+
+    let triggerExtendedError = document.getElementById("trigger-extended-error");
+    triggerExtendedError.addEventListener('click', () => {
+      try {
+        let user = readUser('{ "class": 2025 }');
+      } catch (err) {
+        if (err instanceof ValidationError) {
+          alert("Invalid data: " + err.message); 
+        } else if (err instanceof SyntaxError) { 
+          alert("JSON Syntax Error: " + err.message);
+        } else {
+        throw err; 
+        }
+      }
+    });
+
+
+    window.addEventListener('error', (event) =>{
+      event.preventDefault();
+      console.log(event);
+    });
+
+    let global = document.getElementById("global");
+    global.addEventListener('click', () =>{
+      functionTest();  
+      TrackJS.track('Testing TrackJS!');
+
+    });
   </script>
 </body>
 
